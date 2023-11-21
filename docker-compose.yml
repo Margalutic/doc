@@ -1,0 +1,33 @@
+version: '3'
+
+services:
+  nginx:
+    image: nginx:latest
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx-conf:/etc/nginx/conf.d
+    depends_on:
+      - web
+
+  web:
+    image: golang:latest
+    working_dir: /app
+    volumes:
+      - ./web:/app
+    ports:
+      - "8080:8080"
+    command: go run main.go  # Укажите команду для запуска вашего Golang проекта
+
+  apache:
+    image: httpd:latest
+    ports:
+      - "8081:80"
+    volumes:
+      - ./apache:/usr/local/apache2/htdocs
+
+  redis:
+    image: redis:latest
+    ports:
+      - "6379:6379"
+      
